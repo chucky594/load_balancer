@@ -1,0 +1,9 @@
+# Python / Flask
+*.pyc
+__pycache__/
+*.log
+.env
+
+# System files
+*.swp
+*.bak
