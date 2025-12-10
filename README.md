@@ -40,11 +40,11 @@ To implement the project the project :
    ''' bash 
    sudo systemctl enable nginx
    sudo systemctl restart nginx
-   # For rocky
+   #For rocky
    sudo systemctl enable httpd
    sudo systemctl restart httpd
    
-   # ALways run this command to check for errors on haproxy config file. 
+   #ALways run this command to check for errors on haproxy config file. 
    sudo systemctl journactl -c -f /etc/haproxy/haproxy.cfg 
    
    '''
@@ -70,24 +70,24 @@ To implement the project the project :
         timeout client  50000ms
         timeout server  50000ms
 
-    ** Frontend: Listens for incoming client traffic on port 8000
+    #Frontend: Listens for incoming client traffic on port 8000
     frontend http_front
         bind *:8000
         mode http
         default_backend web_servers
     
-    ** Backend: Distributes traffic to the two web servers
+    #Backend: Distributes traffic to the two web servers
     backend web_servers
         mode http
         balance roundrobin
         option forwardfor
-   ** Health Check: Crucial for high-availability. Checks the /status endpoint.
+    #Health Check: Crucial for high-availability. Checks the /status endpoint.
     option httpchk GET /status 
     
-    ** Server 1: Ubuntu Nginx Backend (local loopback)
+    #Server 1: Ubuntu Nginx Backend (local loopback)
     server ubuntu_nginx 127.0.0.1:80 check inter 2000ms rise 2 fall 3
     
-    ** Server 2: Rocky Apache Backend (remote IP)
+    #Server 2: Rocky Apache Backend (remote IP)
     server rocky_apache 192.168.1.101:80 check inter 2000ms rise 2 fall 3
     '''
    **Make sure to use local on ubuntu_nginx and not its own IP address.
@@ -100,38 +100,38 @@ To implement the project the project :
 
    sudo systemctl restart haproxy.
 
-   # Also confirm that all the applications are running at their desired ports by running:
+   #Also confirm that all the applications are running at their desired ports by running:
 
    sudo ss -tulnp | grep 80
 
    '''
    ** Ensure to disable the firewalls on each backend by running:
    ''' bash
-   # On rocky first confirm if its running or not and if it is:
+   #On rocky first confirm if its running or not and if it is:
    sudo systemctl status firewalld
    sudo systemctl stop firewalld
 
-   # On Ubuntu do the same thing
+   #On Ubuntu do the same thing
    sudo ufw status
    sudo ufw disable
-   # If you come across 'command not found' you're in luck there no need of disabling ufw.
+   #If you come across 'command not found' you're in luck there no need of disabling ufw.
 
    **Disabling the firewall ensures that the applications are not blocked from running.
    To enusre everything is okay run :
    ''' bash
    curl -v http://ROCKY_IP:80
-   # If your application instance is being is displayed you're good.
+   #If your application instance is being is displayed you're good.
    curl -v http://UBUNTU_IP/localhost:80
-   # If your application instance is being is displayed you're good.
+   #If your application instance is being is displayed you're good.
 
-   # For HAProxy make sure it actually load balancing between the two backends.
+   #For HAProxy make sure it actually load balancing between the two backends.
    http://UBUNTU_IP:8000
-   # Open your browser and confirm whether it switching from ubuntu to rocky app instances and if so you're good.
+   #Open your browser and confirm whether it switching from ubuntu to rocky app instances and if so you're good.
    
-   # Disable one backend server to ensure the load balancer actually works .
+   #Disable one backend server to ensure the load balancer actually works .
    sudo systemctl stop httpd
 
-   # You should only the ubuntu instance being displayed.
+   #You should only the ubuntu instance being displayed.
 
 #### Summary 
 That is how web service load balancing works. Always ensure the firewall is disabled on each backend . 
