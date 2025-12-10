@@ -70,24 +70,24 @@ To implement the project the project :
         timeout client  50000ms
         timeout server  50000ms
 
-    # Frontend: Listens for incoming client traffic on port 8000
+    ** Frontend: Listens for incoming client traffic on port 8000
     frontend http_front
         bind *:8000
         mode http
         default_backend web_servers
     
-    # Backend: Distributes traffic to the two web servers
+    ** Backend: Distributes traffic to the two web servers
     backend web_servers
         mode http
         balance roundrobin
         option forwardfor
-   # Health Check: Crucial for high-availability. Checks the /status endpoint.
+   ** Health Check: Crucial for high-availability. Checks the /status endpoint.
     option httpchk GET /status 
     
-    # Server 1: Ubuntu Nginx Backend (local loopback)
+    ** Server 1: Ubuntu Nginx Backend (local loopback)
     server ubuntu_nginx 127.0.0.1:80 check inter 2000ms rise 2 fall 3
     
-    # Server 2: Rocky Apache Backend (remote IP)
+    ** Server 2: Rocky Apache Backend (remote IP)
     server rocky_apache 192.168.1.101:80 check inter 2000ms rise 2 fall 3
     '''
    **Make sure to use local on ubuntu_nginx and not its own IP address.
