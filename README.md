@@ -21,12 +21,12 @@ Make sure to install all the necessary dependencies for the project by running.
 #### Installation 
 You can run this project locally on your machine by running 
 1 Clone git repository :
-  ''' bash
+  '''bash
   git clone https://github.com/chucky594/load_balancer.git 
   '''
 
 2. Install dependencies:
-   ''' bash 
+   '''bash 
    pip install requiremnts.txt
    '''
 
@@ -37,7 +37,7 @@ You can run this project locally on your machine by running
 To implement the project the project :
 1. Confirm if both web servers are enable and running smoothly without any errors.By running:
    On Ubuntu:
-   ''' bash 
+   '''bash 
    sudo systemctl enable nginx
    sudo systemctl restart nginx
    #For rocky
@@ -52,11 +52,11 @@ To implement the project the project :
    
 
    Configure the HApooxy to run on port 8000 to avoid collision on port 80 with other running applications.Run
-   ''' bash
+   '''bash
    sudo nano /etc/haproxy/haproxy.cfg
    '''
    Add the following configuration to the haproxy configuration file:
-   ''' bash
+   '''bash
    global
         log /dev/log    local0 notice
         daemon
@@ -95,7 +95,7 @@ To implement the project the project :
 
    Enable and start HAProxy look any errors and fix them .
    Run:
-   ''' bash
+   '''bash
    sudo systemctl enable haproxy
 
    sudo systemctl restart haproxy.
@@ -106,7 +106,7 @@ To implement the project the project :
 
    '''
    ** Ensure to disable the firewalls on each backend by running:
-   ''' bash
+   '''bash
    #On rocky first confirm if its running or not and if it is:
    sudo systemctl status firewalld
    sudo systemctl stop firewalld
@@ -118,7 +118,7 @@ To implement the project the project :
 
    **Disabling the firewall ensures that the applications are not blocked from running.
    To enusre everything is okay run :
-   ''' bash
+   '''bash
    curl -v http://ROCKY_IP:80
    #If your application instance is being is displayed you're good.
    curl -v http://UBUNTU_IP/localhost:80
